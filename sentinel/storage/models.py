@@ -1,7 +1,7 @@
 """
 Data structures for events and alerts (no SQLAlchemy).
 """
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Dict, Any
 
 
@@ -15,7 +15,7 @@ class Event:
     def __init__(self, event_type: str, data: Dict[str, Any], created_at: datetime = None):
         self.event_type = event_type
         self.data = data
-        self.created_at = created_at or datetime.utcnow()
+        self.created_at = created_at or datetime.now(timezone.utc)
     
     def to_dict(self) -> Dict[str, Any]:
         """Convert to dictionary for database insertion."""
@@ -37,7 +37,7 @@ class Alert:
         self.title = title
         self.severity = severity
         self.details = details
-        self.created_at = created_at or datetime.utcnow()
+        self.created_at = created_at or datetime.now(timezone.utc)
     
     def to_dict(self) -> Dict[str, Any]:
         """Convert to dictionary for database insertion."""

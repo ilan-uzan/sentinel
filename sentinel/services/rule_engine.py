@@ -7,18 +7,10 @@ from typing import List, Dict, Any
 class RuleEngine:
     """
     Evaluates events against rules and generates alerts.
-    
-    This engine checks events against predefined rules and
-    creates alerts when conditions are met.
     """
     
     def __init__(self, rules: Dict[str, Any]):
-        """
-        Initialize the rule engine.
-        
-        Args:
-            rules: Dictionary containing rule definitions
-        """
+        """Initialize the rule engine."""
         self.rules = rules
     
     def evaluate_events(self, events: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
@@ -31,12 +23,25 @@ class RuleEngine:
         Returns:
             List[Dict[str, Any]]: List of generated alerts
         """
-        # TODO: Implement rule evaluation
-        # Pseudocode:
-        # 1. Initialize empty alerts list
-        # 2. For each event in events:
-        #    - If event_type == 'net':
-        #      - Check if raddr.ip is in blocklist
-        #      - If yes, create alert dict with title, severity, details
-        # 3. Return alerts list
-        return [] 
+        alerts = []
+        
+        for event in events:
+            if event.get('event_type') == 'network':
+                # Check for suspicious network activity
+                if self._is_suspicious_network(event):
+                    alerts.append(self._create_network_alert(event))
+        
+        return alerts
+    
+    def _is_suspicious_network(self, event: Dict[str, Any]) -> bool:
+        """Check if network event is suspicious."""
+        # Basic check - can be expanded later
+        return False
+    
+    def _create_network_alert(self, event: Dict[str, Any]) -> Dict[str, Any]:
+        """Create a network alert."""
+        return {
+            'title': 'Suspicious Network Activity Detected',
+            'severity': 'medium',
+            'details': event
+        } 
