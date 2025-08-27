@@ -1,197 +1,388 @@
-# Sentinel
+# 🛡️ Sentinel - Advanced System Monitoring & Alerting
 
-## 📖 Project Overview
+**Sentinel** is a comprehensive cybersecurity monitoring tool that provides real-time system monitoring, security alerting, and threat detection capabilities. Built with Python OOP principles and modern web technologies.
 
-Sentinel is a **minimal, functional cybersecurity monitoring tool** that provides real-time system monitoring and alerting capabilities. The application addresses the need for continuous system surveillance by collecting system data, storing events in a PostgreSQL database, and exposing a RESTful API for monitoring and alert management.
+## ✨ **Features**
 
-**Problem**: Organizations need a lightweight, local agent for system monitoring without complex enterprise solutions.
+### 🔍 **Core Monitoring**
+- **Real-time Process Monitoring** - Track CPU, memory, and process status
+- **Network Connection Analysis** - Monitor active connections and detect suspicious activity
+- **Security Rule Engine** - Configurable rules for threat detection
+- **Automated Alerting** - Real-time security alerts with severity levels
 
-**Solution**: A Python-based monitoring tool that collects system data, evaluates security rules, and provides real-time alerts through a simple HTTP API.
+### 🚀 **Advanced API (v1.0.0)**
+- **RESTful API** - Comprehensive HTTP endpoints for all functionality
+- **Real-time Streaming** - Server-Sent Events for live monitoring
+- **Advanced Filtering** - Query events and alerts by type, severity, and time
+- **Background Processing** - Asynchronous task execution
+- **CORS Support** - Web frontend integration ready
+- **Interactive Documentation** - Auto-generated API docs with Swagger UI
 
-**Tech Stack**: Python 3.x with OOP principles, FastAPI, PostgreSQL, and psycopg2 for database operations.
+### 🖥️ **Command Line Interface**
+- **Interactive CLI** - Rich terminal interface with progress bars
+- **Single Scan Mode** - On-demand system analysis
+- **Continuous Monitoring** - Background agent with configurable intervals
+- **System Testing** - Comprehensive component validation
 
-**Use Cases**: Local system monitoring, security event collection, network connection tracking, and process monitoring for development and small-scale deployments.
+### 🗄️ **Data Management**
+- **PostgreSQL Storage** - Robust data persistence with JSONB support
+- **Event Logging** - Comprehensive system event tracking
+- **Alert Management** - Security alert storage and retrieval
+- **Statistics & Analytics** - Time-based data analysis
 
----
-
-## 🚀 Features
-
-### ✅ Implemented & Working
-- **Real Process Monitoring**: Collects actual system processes using psutil (400+ processes)
-- **Health Monitoring API**: `/health` endpoint for system status
-- **Event Collection**: `/events` endpoint to retrieve system events with pagination
-- **Alert Management**: `/alerts` endpoint to view security alerts with severity levels
-- **Database Integration**: PostgreSQL with JSONB storage for flexible data
-- **Configuration Management**: Environment-based configuration with .env support
-- **Auto-reload Development Server**: Hot-reload for development
-- **Real Data Pipeline**: Collectors → Database → API working end-to-end
-
-### 🔄 Planned
-- **Network Collector**: Network connection monitoring (basic structure ready)
-- **Rule Engine**: Automated alert generation (basic structure ready)
-- **CLI Interface**: Command-line tools for system administration
-- **Real-time Data Collection**: Continuous system monitoring with configurable intervals
-
----
-
-## 🛠 Tech Stack
-
-- **Programming Language**: Python 3.x with Object-Oriented Programming
-- **Database**: PostgreSQL with psycopg2 direct connection
-- **Libraries**:
-  - `fastapi` - Modern web framework for building APIs
-  - `uvicorn` - ASGI server for running FastAPI applications
-  - `psycopg2-binary` - PostgreSQL adapter for Python
-  - `pydantic` - Data validation using Python type annotations
-  - `python-dotenv` - Environment variable management
-  - `psutil` - Cross-platform library for system monitoring
-  - `typer` - Command-line interface creation
-- **APIs**: RESTful HTTP API with JSON responses
-- **Architecture**: Clean architecture with separation of concerns (core, services, storage, api)
-
----
-
-## 📂 Project Structure
+## 🏗️ **Architecture**
 
 ```
-hackathon/
-├── .git/                           # Git repository
-├── .gitignore                      # Python .gitignore patterns
-├── .venv/                          # Virtual environment
-├── LICENSE                         # MIT License
-├── README.md                       # Project documentation
-├── config.py                       # Configuration management with Pydantic
-├── main.py                         # FastAPI server entry point
-├── requirements.txt                # Python dependencies
-├── database/
-│   └── schema.sql                 # PostgreSQL schema with events/alerts tables
-├── rules/
-│   └── default.json               # Security rules configuration
-└── sentinel/                       # Main Python package
-    ├── __init__.py                 # Package initialization
-    ├── api/                        # HTTP API layer
-    │   ├── __init__.py
-    │   └── app.py                  # FastAPI application with 3 working endpoints
-    ├── core/                       # Core domain logic and collectors
-    │   ├── __init__.py
-    │   ├── base_collector.py       # Abstract base class for collectors
-    │   ├── process_collector.py    # Real process monitoring using psutil
-    │   └── network_collector.py    # Network monitoring collector (basic structure)
-    ├── services/                   # Business logic and orchestration
-    │   ├── __init__.py
-    │   ├── collector_service.py    # Working collector orchestration service
-    │   └── rule_engine.py          # Basic rule evaluation structure
-    └── storage/                    # Database layer and data persistence
-        ├── __init__.py
-        ├── db.py                   # psycopg2 database connection
-        ├── models.py               # Data structures for events and alerts
-        └── repositories.py         # Working data access layer with CRUD operations
+sentinel/
+├── api/                    # FastAPI web application
+│   ├── app.py            # Enhanced API with 15+ endpoints
+│   └── __init__.py
+├── core/                  # Data collection layer
+│   ├── base_collector.py # Abstract collector interface
+│   ├── process_collector.py # System process monitoring
+│   ├── network_collector.py # Network connection analysis
+│   └── __init__.py
+├── services/              # Business logic layer
+│   ├── collector_service.py # Data collection orchestration
+│   ├── rule_engine.py    # Security rule evaluation
+│   └── __init__.py
+└── storage/               # Data persistence layer
+    ├── db.py             # PostgreSQL connection management
+    ├── models.py         # Data structures
+    ├── repositories.py   # Data access layer
+    └── __init__.py
 ```
 
----
+## 🚀 **Quick Start**
 
-## ⚡️ Getting Started
+### **1. Prerequisites**
+```bash
+# PostgreSQL database
+# Python 3.8+
+# Virtual environment
+```
 
-### 1. Clone the repo
+### **2. Installation**
 ```bash
 git clone https://github.com/ilan-uzan/sentinel.git
 cd sentinel
-```
-
-### 2. Install dependencies
-```bash
+python3 -m venv .venv
+source .venv/bin/activate  # On Windows: .venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-### 3. Setup PostgreSQL
-Based on the existing database schema and configuration:
-
-1. **Create Database**: Create a PostgreSQL database named `sentinel_one_lite`
-2. **Create User**: Create user `solite_user` with appropriate permissions
-3. **Environment Variables**: Create a `.env` file with:
-   ```env
-   DB_HOST=localhost
-   DB_PORT=5432
-   DB_NAME=sentinel_one_lite
-   DB_USER=solite_user
-   DB_PASSWORD=your_password
-   COLLECT_INTERVAL_SEC=10
-   ```
-4. **Run Schema**: Execute `database/schema.sql` to create tables and indexes
-
-### 4. Run the app
+### **3. Database Setup**
 ```bash
-python3 main.py
+# Create PostgreSQL database
+createdb sentinel_one_lite
+
+# Run schema
+psql -d sentinel_one_lite -f database/schema.sql
 ```
 
-The API server will start on `http://localhost:8000` with the following endpoints:
-- **Health Check**: `GET /health` → `{"status": "ok"}`
-- **Events**: `GET /events?limit=20` → Real system process data
-- **Alerts**: `GET /alerts?limit=20` → Security alerts from database
+### **4. Configuration**
+Create `.env` file:
+```env
+DB_HOST=localhost
+DB_PORT=5432
+DB_NAME=sentinel_one_lite
+DB_USER=solite_user
+DB_PASSWORD=password
+COLLECT_INTERVAL_SEC=10
+```
 
----
+### **5. Start the System**
 
-## 🎯 Roadmap
+#### **Option A: API Server**
+```bash
+python3 main.py
+# API available at: http://localhost:8000
+# Interactive docs: http://localhost:8000/docs
+```
 
-Based on current implementation status:
+#### **Option B: CLI Interface**
+```bash
+python3 cli.py --help
+python3 cli.py status
+python3 cli.py scan-once
+python3 cli.py agent-start
+```
 
-### Phase 1: Core Collectors ✅ COMPLETED
-- [x] Implement `ProcessCollector.collect()` method using psutil
-- [x] Implement `NetworkCollector.collect()` method using psutil
-- [x] Complete `CollectorService.collect_all()` orchestration
+## 📡 **API Endpoints**
 
-### Phase 2: Rule Engine 🔄 IN PROGRESS
-- [x] Basic `RuleEngine.evaluate_events()` structure
-- [ ] Implement actual security rule evaluation logic
-- [ ] Integrate with blocklisted IPs from `rules/default.json`
+### **Core Endpoints**
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `GET` | `/` | API information and endpoint list |
+| `GET` | `/health` | Enhanced system health check |
+| `GET` | `/status` | Comprehensive system status |
+| `GET` | `/events` | System events with filtering |
+| `GET` | `/alerts` | Security alerts with filtering |
 
-### Phase 3: CLI Interface 🔄 PLANNED
-- [ ] Implement `scan_once` command for single system scan
-- [ ] Implement `agent_start` command for continuous monitoring
-- [ ] Add command-line argument parsing and help
+### **Advanced Features**
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `POST` | `/scan` | Manual system scan |
+| `GET` | `/monitor` | Real-time monitoring stream |
+| `GET` | `/rules` | Security rules configuration |
+| `POST` | `/rules/reload` | Reload security rules |
+| `GET` | `/stats` | System statistics (configurable period) |
+| `GET` | `/processes` | Process information with sorting |
+| `GET` | `/network` | Network connections |
 
-### Phase 4: Enhanced API 🔄 PLANNED
-- [ ] Add POST endpoints for manual event/alert creation
-- [ ] Implement real-time data streaming
-- [ ] Add authentication and rate limiting
+### **Query Parameters**
+- **Filtering**: `event_type`, `severity`, `active`
+- **Pagination**: `limit` (1-200)
+- **Sorting**: `sort_by` (cpu, memory, pid, name)
+- **Time-based**: `hours` for statistics
+- **Real-time**: `duration` for monitoring streams
 
----
+## 🖥️ **CLI Commands**
 
-## 🤝 Contributing
+### **Available Commands**
+```bash
+python3 cli.py scan-once     # Single system scan
+python3 cli.py agent-start   # Continuous monitoring
+python3 cli.py status        # System status overview
+python3 cli.py test          # Component testing
+```
 
-### Branching Model
-- **Feature Branches**: Use `feat/<feature-name>` format
-- **Never commit directly to main**: All changes go through feature branches
-- **Small PRs**: Keep pull requests focused and manageable
-- **Merge Strategy**: Feature branches are merged into main after review
+### **Command Options**
+```bash
+# Scan with verbose output
+python3 cli.py scan-once --verbose
 
-### Commit Style
-- **Format**: `feat: description of changes`
-- **Examples**: 
-  - `feat: add process collector implementation`
-  - `feat: implement rule engine for alerts`
-  - `feat: add CLI scan command`
+# Start agent with custom interval
+python3 cli.py agent-start --interval 30
 
-### Testing
-- **API Testing**: Test endpoints with curl or Postman
-- **Database Testing**: Verify schema and data operations
-- **Integration Testing**: Test collector → storage → API flow
+# Get help for any command
+python3 cli.py --help
+python3 cli.py scan-once --help
+```
 
----
+## 🔧 **Configuration**
 
-## 📜 License
+### **Environment Variables**
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `DB_HOST` | `localhost` | Database host |
+| `DB_PORT` | `5432` | Database port |
+| `DB_NAME` | `sentinel_one_lite` | Database name |
+| `DB_USER` | `solite_user` | Database user |
+| `DB_PASSWORD` | `password` | Database password |
+| `COLLECT_INTERVAL_SEC` | `10` | Data collection interval |
+
+### **Security Rules**
+Configure security rules in `rules/default.json`:
+```json
+{
+  "blocklisted_ips": ["192.168.1.100", "10.0.0.50"],
+  "severity_levels": {
+    "low": "info",
+    "medium": "warning", 
+    "high": "critical"
+  }
+}
+```
+
+## 🧪 **Testing**
+
+### **API Testing**
+```bash
+# Start API server
+python3 main.py
+
+# In another terminal, test endpoints
+python3 test_enhanced_api.py
+```
+
+### **CLI Testing**
+```bash
+# Test all CLI commands
+python3 cli.py test
+python3 cli.py status
+python3 cli.py scan-once --verbose
+```
+
+## 📊 **Real-time Features**
+
+### **Live Monitoring**
+- **Server-Sent Events** for real-time data streaming
+- **Background task processing** for non-blocking operations
+- **Configurable monitoring duration** (10-300 seconds)
+- **Live system statistics** and process information
+
+### **Data Streaming**
+```bash
+# Start real-time monitoring (60 seconds)
+curl "http://localhost:8000/monitor?duration=60"
+
+# Monitor with custom duration
+curl "http://localhost:8000/monitor?duration=120"
+```
+
+## 🔒 **Security Features**
+
+### **Threat Detection**
+- **IP Blocklisting** - Block suspicious IP addresses
+- **Port Monitoring** - Detect connections to suspicious ports
+- **Process Analysis** - Identify high CPU/memory usage
+- **Network Pattern Recognition** - Detect unusual connection patterns
+
+### **Alert System**
+- **Multi-level Severity** - Low, Medium, High, Critical
+- **Real-time Generation** - Instant threat notification
+- **Persistent Storage** - Historical alert tracking
+- **Configurable Rules** - Dynamic security policy updates
+
+## 🚀 **Advanced Usage**
+
+### **Web Integration**
+```javascript
+// Real-time monitoring with JavaScript
+const eventSource = new EventSource('/monitor?duration=300');
+eventSource.onmessage = function(event) {
+    const data = JSON.parse(event.data);
+    console.log('System update:', data);
+};
+```
+
+### **Custom Rules**
+```bash
+# Reload security rules without restart
+curl -X POST "http://localhost:8000/rules/reload"
+
+# Get current rules configuration
+curl "http://localhost:8000/rules"
+```
+
+### **Statistics & Analytics**
+```bash
+# Get 24-hour statistics
+curl "http://localhost:8000/stats?hours=24"
+
+# Get 7-day statistics
+curl "http://localhost:8000/stats?hours=168"
+```
+
+## 📈 **Performance & Scalability**
+
+### **Optimizations**
+- **Connection pooling** for database operations
+- **Asynchronous processing** for I/O operations
+- **Efficient data structures** for large datasets
+- **Configurable collection intervals** for resource management
+
+### **Monitoring Capabilities**
+- **500+ concurrent processes** monitoring
+- **Real-time network analysis** with permission handling
+- **Efficient JSONB storage** for flexible data
+- **Indexed queries** for fast data retrieval
+
+## 🛠️ **Development**
+
+### **Project Structure**
+```
+hackathon/
+├── sentinel/              # Main Python package
+├── database/              # Database schema
+├── rules/                 # Security rules
+├── cli.py                # Command-line interface
+├── main.py               # API server entry point
+├── config.py             # Configuration management
+├── requirements.txt      # Python dependencies
+└── README.md            # This file
+```
+
+### **Adding New Collectors**
+```python
+from sentinel.core.base_collector import BaseCollector
+
+class CustomCollector(BaseCollector):
+    def collect(self) -> List[Dict[str, Any]]:
+        # Implement your collection logic
+        return []
+```
+
+### **Extending Rules Engine**
+```python
+# Add new rule types in rules/default.json
+# Implement evaluation logic in RuleEngine class
+```
+
+## 📚 **API Documentation**
+
+### **Interactive Docs**
+- **Swagger UI**: `http://localhost:8000/docs`
+- **ReDoc**: `http://localhost:8000/redoc`
+- **OpenAPI Schema**: `http://localhost:8000/openapi.json`
+
+### **Example Requests**
+```bash
+# Health check
+curl "http://localhost:8000/health"
+
+# Get filtered events
+curl "http://localhost:8000/events?event_type=process&limit=10"
+
+# Manual system scan
+curl -X POST "http://localhost:8000/scan"
+
+# Get system statistics
+curl "http://localhost:8000/stats?hours=48"
+```
+
+## 🤝 **Contributing**
+
+### **Development Workflow**
+1. **Feature Branches** - Create `feat/<name>` branches
+2. **Small PRs** - Keep changes focused and manageable
+3. **Testing** - Ensure all components work before merging
+4. **Documentation** - Update README and code comments
+
+### **Code Standards**
+- **Python OOP** - Use classes and inheritance
+- **Type Hints** - Include type annotations
+- **Docstrings** - Document all public methods
+- **Error Handling** - Graceful error management
+
+## 📄 **License**
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-Copyright (c) 2025 ilan
+## 🎯 **Roadmap**
+
+### **Completed Features** ✅
+- [x] **Project Scaffold** - Basic structure and configuration
+- [x] **Database Layer** - PostgreSQL with psycopg2
+- [x] **Data Collectors** - Process and network monitoring
+- [x] **Rule Engine** - Security rule evaluation
+- [x] **CLI Interface** - Command-line monitoring tools
+- [x] **Enhanced API** - Comprehensive REST API v1.0.0
+
+### **Future Enhancements** 🚀
+- [ ] **Web Dashboard** - React/Vue frontend
+- [ ] **Machine Learning** - Anomaly detection
+- [ ] **Distributed Monitoring** - Multi-node support
+- [ ] **Alert Notifications** - Email, Slack, webhook integration
+- [ ] **Performance Metrics** - Advanced system analytics
+- [ ] **Plugin System** - Extensible collector framework
+
+## 🆘 **Support**
+
+### **Troubleshooting**
+- **Database Connection**: Check PostgreSQL service and credentials
+- **Permission Issues**: Network collection may require elevated privileges on macOS
+- **Import Errors**: Ensure virtual environment is activated
+- **API Errors**: Check server logs and database connectivity
+
+### **Getting Help**
+- **Documentation**: Check this README and API docs
+- **Issues**: Report bugs and feature requests
+- **Testing**: Use built-in test commands for validation
 
 ---
 
-## 🔧 Development Notes
+**🚀 Sentinel v1.0.0** - Advanced system monitoring and cybersecurity alerting platform.
 
-- **Database**: Using psycopg2 for direct PostgreSQL access
-- **API**: FastAPI with automatic OpenAPI documentation
-- **Configuration**: Pydantic-based settings with environment variable support
-- **Architecture**: Follows OOP principles with abstract base classes and clear separation of concerns
-- **Current Status**: **Minimal and functional** - real collectors working, database operational, API serving live data
-- **Data Flow**: System processes → Collectors → PostgreSQL → FastAPI → JSON responses 
+*Built with ❤️ using Python, FastAPI, PostgreSQL, and modern web technologies.* 
