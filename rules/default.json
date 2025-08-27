@@ -1,0 +1,12 @@
+{
+  "blocklisted_ips": [
+    "192.168.1.100",
+    "10.0.0.50",
+    "172.16.0.25"
+  ],
+  "severity_levels": {
+    "low": "info",
+    "medium": "warning", 
+    "high": "critical"
+  }
+} 
