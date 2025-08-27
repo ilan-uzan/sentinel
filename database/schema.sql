@@ -24,16 +24,6 @@ CREATE INDEX IF NOT EXISTS idx_events_created_at ON events(created_at DESC);
 CREATE INDEX IF NOT EXISTS idx_alerts_severity ON alerts(severity);
 CREATE INDEX IF NOT EXISTS idx_alerts_created_at ON alerts(created_at DESC);
 
--- Insert sample data for testing
-INSERT INTO events (event_type, data) VALUES 
-    ('system', '{"message": "System startup", "uptime": 0}'),
-    ('process', '{"pid": 1, "name": "systemd", "cpu_percent": 0.1}'),
-    ('network', '{"local_addr": "127.0.0.1:22", "remote_addr": "192.168.1.100:12345", "status": "ESTABLISHED"}');
-
-INSERT INTO alerts (title, severity, details) VALUES 
-    ('Suspicious Network Connection', 'medium', '{"ip": "192.168.1.100", "reason": "Blocklisted IP detected"}'),
-    ('High CPU Usage', 'low', '{"process": "python", "cpu_percent": 85.2}');
-
 -- Grant permissions (adjust as needed for your setup)
 -- GRANT ALL PRIVILEGES ON TABLE events TO solite_user;
 -- GRANT ALL PRIVILEGES ON TABLE alerts TO solite_user;
