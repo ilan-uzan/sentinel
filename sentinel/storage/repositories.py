@@ -1,9 +1,15 @@
 """
 Data access layer using psycopg2.
 """
+import json
+import sys
+import os
 from typing import List, Dict, Any
-from .db import get_connection, get_cursor
-from .models import Event, Alert
+
+# Add root directory to path to import config
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from sentinel.storage.db import get_connection, get_cursor
+from sentinel.storage.models import Event, Alert
 
 
 class EventRepository:
@@ -20,14 +26,24 @@ class EventRepository:
         Returns:
             bool: True if successful, False otherwise
         """
-        # TODO: Implement batch event insertion
-        # Pseudocode:
-        # 1. Get database connection
-        # 2. Create cursor
-        # 3. Execute INSERT INTO events (event_type, data, created_at) VALUES (%s, %s, %s)
-        # 4. Commit transaction
-        # 5. Close cursor and connection
-        return False
+        try:
+            conn = get_connection()
+            cursor = get_cursor(conn)
+            
+            for event in events:
+                cursor.execute(
+                    "INSERT INTO events (event_type, data, created_at) VALUES (%s, %s, %s)",
+                    (event.event_type, json.dumps(event.data), event.created_at)
+                )
+            
+            conn.commit()
+            cursor.close()
+            conn.close()
+            return True
+            
+        except Exception as e:
+            print(f"Error inserting events: {e}")
+            return False
     
     @staticmethod
     def latest(limit: int = 20) -> List[Dict[str, Any]]:
@@ -40,14 +56,25 @@ class EventRepository:
         Returns:
             List[Dict[str, Any]]: List of event dictionaries
         """
-        # TODO: Implement latest events query
-        # Pseudocode:
-        # 1. Get database connection
-        # 2. Create cursor
-        # 3. Execute SELECT * FROM events ORDER BY created_at DESC LIMIT %s
-        # 4. Fetch all results
-        # 5. Close cursor and connection
-        return []
+        try:
+            conn = get_connection()
+            cursor = get_cursor(conn)
+            
+            cursor.execute(
+                "SELECT * FROM events ORDER BY created_at DESC LIMIT %s",
+                (limit,)
+            )
+            
+            events = cursor.fetchall()
+            cursor.close()
+            conn.close()
+            
+            # Convert to list of dicts
+            return [dict(event) for event in events]
+            
+        except Exception as e:
+            print(f"Error fetching events: {e}")
+            return []
 
 
 class AlertRepository:
@@ -66,14 +93,23 @@ class AlertRepository:
         Returns:
             bool: True if successful, False otherwise
         """
-        # TODO: Implement alert insertion
-        # Pseudocode:
-        # 1. Get database connection
-        # 2. Create cursor
-        # 3. Execute INSERT INTO alerts (title, severity, details, created_at) VALUES (%s, %s, %s, %s)
-        # 4. Commit transaction
-        # 5. Close cursor and connection
-        return False
+        try:
+            conn = get_connection()
+            cursor = get_cursor(conn)
+            
+            cursor.execute(
+                "INSERT INTO alerts (title, severity, details) VALUES (%s, %s, %s)",
+                (title, severity, json.dumps(details))
+            )
+            
+            conn.commit()
+            cursor.close()
+            conn.close()
+            return True
+            
+        except Exception as e:
+            print(f"Error inserting alert: {e}")
+            return False
     
     @staticmethod
     def latest(limit: int = 20) -> List[Dict[str, Any]]:
@@ -86,11 +122,22 @@ class AlertRepository:
         Returns:
             List[Dict[str, Any]]: List of alert dictionaries
         """
-        # TODO: Implement latest alerts query
-        # Pseudocode:
-        # 1. Get database connection
-        # 2. Create cursor
-        # 3. Execute SELECT * FROM alerts ORDER BY created_at DESC LIMIT %s
-        # 4. Fetch all results
-        # 5. Close cursor and connection
-        return [] 
+        try:
+            conn = get_connection()
+            cursor = get_cursor(conn)
+            
+            cursor.execute(
+                "SELECT * FROM alerts ORDER BY created_at DESC LIMIT %s",
+                (limit,)
+            )
+            
+            alerts = cursor.fetchall()
+            cursor.close()
+            conn.close()
+            
+            # Convert to list of dicts
+            return [dict(alert) for alert in alerts]
+            
+        except Exception as e:
+            print(f"Error fetching alerts: {e}")
+            return [] 

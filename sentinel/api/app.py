@@ -1,9 +1,14 @@
 """
 FastAPI application with health, events, and alerts endpoints.
 """
+import sys
+import os
 from fastapi import FastAPI, Query
 from typing import List, Dict, Any
-from ..storage.repositories import EventRepository, AlertRepository
+
+# Add root directory to path to import config
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from sentinel.storage.repositories import EventRepository, AlertRepository
 
 app = FastAPI(
     title="Sentinel API",
@@ -34,11 +39,7 @@ async def get_events(limit: int = Query(20, ge=1, le=100)) -> List[Dict[str, Any
     Returns:
         List[Dict[str, Any]]: List of event dictionaries
     """
-    # TODO: Implement events endpoint
-    # Pseudocode:
-    # 1. Call EventRepository.latest(limit)
-    # 2. Return events list
-    return []
+    return EventRepository.latest(limit)
 
 
 @app.get("/alerts")
@@ -52,8 +53,4 @@ async def get_alerts(limit: int = Query(20, ge=1, le=100)) -> List[Dict[str, Any
     Returns:
         List[Dict[str, Any]]: List of alert dictionaries
     """
-    # TODO: Implement alerts endpoint
-    # Pseudocode:
-    # 1. Call AlertRepository.latest(limit)
-    # 2. Return alerts list
-    return [] 
+    return AlertRepository.latest(limit) 

@@ -1,41 +1,15 @@
 #!/usr/bin/env python3
 """
-Main entry point for Sentinel application
+Main entry point for Sentinel API server.
 """
-
-import typer
-from config import settings
-
-app = typer.Typer(
-    name="sentinel",
-    help="System monitoring and process collection tool",
-    add_completion=False
-)
-
-@app.command()
-def start(
-    interval: int = typer.Option(
-        settings.collect_interval_sec,
-        "--interval", "-i",
-        help="Collection interval in seconds"
-    ),
-    config_file: str = typer.Option(
-        None,
-        "--config", "-c",
-        help="Path to configuration file"
-    )
-):
-    """Start the Sentinel monitoring service"""
-    typer.echo(f"Starting Sentinel with {interval}s collection interval")
-    # TODO: Implement monitoring service
-    typer.echo("Monitoring service not yet implemented")
-
-@app.command()
-def status():
-    """Show current system status"""
-    typer.echo("Sentinel Status:")
-    typer.echo(f"  Database: {settings.db_host}:{settings.db_port}/{settings.db_name}")
-    typer.echo(f"  Collection Interval: {settings.collect_interval_sec}s")
+import uvicorn
 
 if __name__ == "__main__":
-    app() 
+    print("🚀 Starting Sentinel API server...")
+    print("📡 API will be available at: http://localhost:8000")
+    print("🔍 Health check: http://localhost:8000/health")
+    print("📊 Events: http://localhost:8000/events")
+    print("🚨 Alerts: http://localhost:8000/alerts")
+    print("⏹️  Press Ctrl+C to stop")
+    
+    uvicorn.run("sentinel.api.app:app", host="0.0.0.0", port=8000, reload=True) 
