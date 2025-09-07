@@ -7,4 +7,4 @@ I especially appreciate the comments you added to each function and step; they m
 You successfully used all the features we learned in class, and even went beyond that, great work, this makes your Hackathon project very complete. 
 The UI is also clean and easy to use, which adds a lot to the overall experience.
 
-Excellent job — keep up the great work!
+Excellent job! keep up the great work!
